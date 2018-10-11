@@ -1,10 +1,14 @@
 // Imported Node Modules
-var TMI = require('tmi.js'); //Twitch Messaging Interface https://docs.tmijs.org/
-var client = new TMI.client(options);
+const TMI = require('tmi.js'); //Twitch Messaging Interface https://docs.tmijs.org/
+var client = new TMI.Client(options);
 var fs = require('fs');
+var globalVarsObjs = require('./Objects/GlobalVarsObjects.js');
 
-// Valid commands start with:
-var commandPrefix = '!';
+// Commands start with 'w':
+var commandPrefix = 'w';
+client.on("action", function (channel, userstate, message, self) {
+  if (self) return; // Ignores bot's own messages.
+});
 
 // TMI Module's Options Object (Passed into the new client var.)
 var options = {
@@ -13,13 +17,15 @@ var options = {
   },
   connnection: {
       cluster: "aws",
-      reconnect: true
+      reconnect: true,
+      timeout: Infinity
   },
   identity: {
-      username: "WaldyBot",
-      password: "oauth:pytxbth2ifgpojihds4c80rmjj1ivm" // http://twitchapps.com/tmi/ to create API Key
+      username: "waldybot", // <------ Bot account's username goes here. (String)
+      // Default: globalVarsObjs.authenticationObject.authToken
+      password: globalVarsObjs.authenticationObject.authToken // <------ OAuth password. See Objects/Auth.js for detailed instructions on key generation + Auth.js setup. 
   },
-  channels: ["HDBeasta"]
+  channels: ["hdbeasta", "#HDBeasta"]
 };
 
 // Notes:
@@ -33,41 +39,42 @@ var waldyBotVersion = packageJson["version"];
 
 // Startup
 // Note: UNDER CONSTRUCTION NO CURRENT USE
-//client.on('ready', () => {
-//    console.log('v' + waldyBotVersion);
-//    console.log('Ready....'); 
-//  }
-//);
+client.on('connected', (addr, port) => {
+    // On chat connection. Msgs logged to console:
+    console.log(`* Connected to ${addr}:${port}`); // Logs connected address + connected port.
+    console.log(`v` + waldyBotVersion); // placeholder
+    console.log(``+ client.getUsername()); // placeholder
+    console.log(``+ client.getChannels()); // placeholder
+    console.log(``+ client.readyState()); // placeholder
+    console.log(`Ready....`); // placeholder
+
+  }
+);
 
 // Event Handlers:
 // Note: Registers the event handlers. (Defined Below)
 client.on('message', (target, context, msg, self) => {
   // Called when chat message comes in.
-
   if(self) { return } // Ignore messages from the bot
   // This isn't a command since it has no prefix:
   if(msg.substr(0, 1) !== commandPrefix) {
     console.log(`[${target} (${context['message-type']})] ${context.username}: ${msg}`)
     return
   }
-}); 
+}); // Channel Message Event Handler 
 client.on('connected', (addr, port) => {
-  // Called on chat connection.
   
-  // msgs logged to console:
-  console.log(`* Connected to ${addr}:${port}`);
 }); // Channel Connection Event Handler
 client.on('disconnected', onDisconnectedHandler);
- 
-
 function onDisconnectedHandler (reason) {
   console.log(`Disconnected: ${reason}`)
   process.exit(1)
 }; // Called every time the bot disconnects from Twitch
+
 
 // Commands:
 // Placeholder Command 1
 // Placeholder Command 2
 
 
-client.connect();
+client.connect(); // "start": "node WaldyBotTwitch.js", note this for now see package.json
