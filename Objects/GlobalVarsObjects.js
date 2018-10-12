@@ -12,21 +12,21 @@ var authToken = authFile.twitchTokenObject.TwitchOAuth;
 // Objects
 var globalVarObject = {
   // Placeholder
-  waldyBot: waldyBot,
-  waldyBotBeta: waldyBotBeta
+  //waldyBot: waldyBot,
+  //waldyBotBeta: waldyBotBeta
 }
 
 var filesObject = {
   // Placeholder
-  helpFile: helpFile,
-  setUpFile: setUpFile
+  //helpFile: helpFile,
+  //setUpFile: setUpFile
 }
 
 var otherObject = {
   // Placeholder
-  asciiObjs: asciiObjs.asciiObject,
-  copyPastaObjs: copyPastaObjs.copyPastaObject,
-  youtubeObjs: youtubeObjs.youtubeVideoObjects,
+  //asciiObjs: asciiObjs.asciiObject,
+  //copyPastaObjs: copyPastaObjs.copyPastaObject,
+  //youtubeObjs: youtubeObjs.youtubeVideoObjects,
 }
 
 var authenticationObject = {
@@ -35,19 +35,19 @@ var authenticationObject = {
 
 var commandVarObject = {
   // Placeholder
-  cmdHelp: cmdHelp,
-  cmdHelpHelp: cmdHelpHelp,
-  cmdSetUp: cmdSetUp,
-  cmdSetUpHelp: cmdSetUpHelp,
-  cmdSetUpInstallHelp: cmdSetUpInstallHelp,
-  cmdPing: cmdPing,
-  cmdPingHelp: cmdPingHelp,
-  cmdCoolAscii: cmdCoolAscii,
-  cmdCoolAsciiHelp: cmdCoolAsciiHelp,
-  cmdCopyPasta: cmdCopyPasta,
-  cmdCopyPastaHelp: cmdCopyPastaHelp, 
-  cmdYoutube: cmdYoutube,
-  cmdYoutubeHelp: cmdYoutubeHelp 
+  //cmdHelp: cmdHelp,
+  //cmdHelpHelp: cmdHelpHelp,
+  //cmdSetUp: cmdSetUp,
+  //cmdSetUpHelp: cmdSetUpHelp,
+  //cmdSetUpInstallHelp: cmdSetUpInstallHelp,
+  //cmdPing: cmdPing,
+  //cmdPingHelp: cmdPingHelp,
+  //cmdCoolAscii: cmdCoolAscii,
+  //cmdCoolAsciiHelp: cmdCoolAsciiHelp,
+  //cmdCopyPasta: cmdCopyPasta,
+  //cmdCopyPastaHelp: cmdCopyPastaHelp, 
+  //cmdYoutube: cmdYoutube,
+  //cmdYoutubeHelp: cmdYoutubeHelp 
 }
 
 var exportObject = {

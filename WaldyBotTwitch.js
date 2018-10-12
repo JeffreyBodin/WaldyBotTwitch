@@ -3,12 +3,14 @@ const TMI = require('tmi.js'); //Twitch Messaging Interface https://docs.tmijs.o
 var client = new TMI.Client(options);
 var fs = require('fs');
 var globalVarsObjs = require('./Objects/GlobalVarsObjects.js');
+var testAuthNotCommited = require('./testauth.js');
 
 // Commands start with 'w':
 var commandPrefix = 'w';
-client.on("action", function (channel, userstate, message, self) {
-  if (self) return; // Ignores bot's own messages.
-});
+
+//client.on("action", function (channel, userstate, message, self) { // placeholder
+//  if (self) return; // Ignores bot's own messages.
+//});
 
 // TMI Module's Options Object (Passed into the new client var.)
 var options = {
@@ -21,9 +23,11 @@ var options = {
       timeout: Infinity
   },
   identity: {
-      username: "waldybot", // <------ Bot account's username goes here. (String)
-      // Default: globalVarsObjs.authenticationObject.authToken
-      password: globalVarsObjs.authenticationObject.authToken // <------ OAuth password. See Objects/Auth.js for detailed instructions on key generation + Auth.js setup. 
+      username: "waldybot", // <-- YOUR account's username (String). See Objects/Media Storage/bot account username how to.png. 
+      // Default: Use globalVarsObjs.authenticationObject.authToken
+      // IF still commited as my local enviroment. Setup for default as follows: 
+      // Overwrite: testAuthNotCommited.testerTwitchTokenO  bject.TestTwitchOAuth With: globalVarsObjs.authenticationObject.authToken
+      password: testAuthNotCommited.testerTwitchTokenObject.TestTwitchOAuth // <-- OAuth password. See Objects/Auth.js for detailed instructions on key generation + Auth.js setup. 
   },
   channels: ["hdbeasta", "#HDBeasta"]
 };
@@ -33,21 +37,19 @@ var options = {
 // Some code taken from: https://dev.twitch.tv/docs/irc/. Specifically official Twitch example chatbot. Under "Step:2 Sample Code".
 
 // Global Vars
-// Note: UNDER CONSTRUCTION NO CURRENT USE
 var packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
 var waldyBotVersion = packageJson["version"];
 
 // Startup
-// Note: UNDER CONSTRUCTION NO CURRENT USE
 client.on('connected', (addr, port) => {
     // On chat connection. Msgs logged to console:
-    console.log(`* Connected to ${addr}:${port}`); // Logs connected address + connected port.
-    console.log(`v` + waldyBotVersion); // placeholder
-    console.log(``+ client.getUsername()); // placeholder
-    console.log(``+ client.getChannels()); // placeholder
-    console.log(``+ client.readyState()); // placeholder
-    console.log(`Ready....`); // placeholder
-
+    console.log('Address:' + addr); // Connected address
+    console.log('Port:' + port); // Connected port
+    console.log(``+ client.getUsername()); // placeholder. Logs variation of 'justinfan + #####'. ERROR?? 
+    console.log(``+ client.getChannels()); // placeholder. Logs blankspace.
+    console.log(``+ client.readyState()); // Logs 'OPEN'
+    console.log(`v` + waldyBotVersion); // Current version
+    console.log(`Ready....`);
   }
 );
 
@@ -62,14 +64,13 @@ client.on('message', (target, context, msg, self) => {
     return
   }
 }); // Channel Message Event Handler 
-client.on('connected', (addr, port) => {
-  
-}); // Channel Connection Event Handler
-client.on('disconnected', onDisconnectedHandler);
-function onDisconnectedHandler (reason) {
-  console.log(`Disconnected: ${reason}`)
-  process.exit(1)
-}; // Called every time the bot disconnects from Twitch
+
+client.on("chat", function (channel, userstate, message, self) { //in progress
+  if (self) return; // Ignores bot msgs
+  if(message.substr(0, 1) === commandPrefix) {
+    client._sendMessage(0, options.channels[0], 'WaldyBot in the house!');
+  }
+});
 
 
 // Commands:
@@ -77,4 +78,4 @@ function onDisconnectedHandler (reason) {
 // Placeholder Command 2
 
 
-client.connect(); // "start": "node WaldyBotTwitch.js", note this for now see package.json
+client.connect(); // See package.json: "start": "node WaldyBotTwitch.js",. Call "node WaldyBotTwitch.js" to start bot. 
