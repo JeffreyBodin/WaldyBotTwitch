@@ -1,6 +1,6 @@
 // Imported Node Modules
-const TMI = require('tmi.js'); //Twitch Messaging Interface https://docs.tmijs.org/
-var client = new TMI.Client(ClientOptions);
+const tmi = require('tmi.js'); //Twitch Messaging Interface https://docs.tmijs.org/
+var client = new tmi.client(ClientOptions);
 var fs = require('fs');
 var globalVarsObjs = require('./Objects/GlobalVarsObjects.js');
 var testAuthNotCommited = require('./testauth.js');
@@ -105,7 +105,7 @@ client.on("chat", function (channel, userstate, message, self) { //in progress
   if(message == '@waldybot') {
 
   } 
-  
+  console.log(channel);
   client.action(channel = "carc1nogen", userstate['username'] + " fuck you");
   client.action(channel = "hdbeasta", userstate['username'] + " fuck you");
 });
