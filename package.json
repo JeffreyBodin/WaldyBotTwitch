@@ -10,6 +10,9 @@
   "author": "Jeffrey Bodin",
   "license": "MIT",
   "dependencies": {
-    "tmi.js": "^1.2.1"
+    "twitch-js": "^2.0.0-beta.21"
+  },
+  "devDependencies": {
+    "semantic-release": "^15.9.17"
   }
 }
