@@ -35,7 +35,7 @@ var ClientOptions = {
 // Go here for a reference to the userstate object. Which is a chat users info. https://docs.tmijs.org/v1.2.1/Events.html#chat
 
 
-
+// makin a edit
 
 // Global Vars
 var packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
