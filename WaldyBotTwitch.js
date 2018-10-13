@@ -109,7 +109,7 @@ client.on("chat", function (channel, userstate, message, self) { //in progress
   client.action(channel = "carc1nogen", userstate['username'] + " fuck you");
   client.action(channel = "hdbeasta", userstate['username'] + " fuck you");
 });
-
+//
 
 // TESTTEST
 client.on("ping", function () {
