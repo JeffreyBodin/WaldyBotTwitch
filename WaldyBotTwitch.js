@@ -1,158 +1,116 @@
 // Imported Node Modules
-const TwitchJs = require('twitch-js').default; // TwitchJS https://twitch-apis.github.io/twitch-js/docs/getting-started
-//const tmi = require('tmi.js'); //Twitch Messaging Interface https://docs.tmijs.org/ // TMI REDO
-//var client = new tmi.client(ClientOptions); // TMI REDO
+var TwitchJS = require("twitch-js"); //.default; // TwitchJS https://www.npmjs.com/package/twitch-js
+
 var fs = require('fs');
 var globalVarsObjs = require('./Objects/GlobalVarsObjects.js');
 var testAuthNotCommited = require('./testauth.js');
+const defaultIdentityPassword = globalVarsObjs.authenticationObject.authToken;
+const testAuthNotCommitedLocalUsername = testAuthNotCommited.testerTwitchTokenObject.testTwitchUsername;
+const testAuthNotCommitedLocalPassword = testAuthNotCommited.testerTwitchTokenObject.TestTwitchOAuth;
 
 // Commands start with 'w':
-var commandPrefix = 'w';
+//var commandPrefix = 'w';
 
 // TMI Module's Options Object (Passed into the new client var.)
 // TMI REDO
-var ClientOptions = {
+const options = {
+  connection: {
+      reconnect: true,
+      secure: true,
+      //cluster: "aws",
+      //timeout: Infinity
+  },
   options: {
+    // Some methods may require a client ID. If needed, please provide a
+    // client ID below.
+    // clientId: CLIENT_ID,
       debug: true
   },
-  connection: {
-      cluster: "aws",
-      reconnect: true,
-      timeout: Infinity
-  },
   identity: {
-      username: "waldybot", // <-- YOUR account's username (String). See Objects/Media Storage/bot account username how to.png. 
-      // Default: Use globalVarsObjs.authenticationObject.authToken
-      // IF still commited as my local enviroment. Setup for default as follows: 
-      // Overwrite: testAuthNotCommited.testerTwitchTokenObject.TestTwitchOAuth With: globalVarsObjs.authenticationObject.authToken
-      password: testAuthNotCommited.testerTwitchTokenObject.TestTwitchOAuth // <-- OAuth password. See Objects/Auth.js for detailed instructions on key generation + Auth.js setup. 
+      username: testAuthNotCommitedLocalUsername, // <-- YOUR account's username (String). See 'Objects/Media Storage/bot account username how to.png'. 
+      // Default: defaultIdentityPassword
+      // IF I still commited as my local enviroment. Setup for default as follows: 
+      // Overwrite: testAuthNotCommitedLocalPassword With: defaultIdentityPassword
+      password: testAuthNotCommitedLocalPassword, // <-- OAuth password. See Objects/Auth.js for detailed instructions on key generation + Auth.js setup. 
   },
-  channels: ["carc1nogen", "hdbeasta", "#hdbeasta", "#HDBeasta"]
+  channels: ['#hdbeasta'],
 };
+
+var client = new TwitchJS.Client(options); // TwitchJS https://twitch-apis.github.io/twitch-js/docs/getting-started
+
 
 // Notes:
 // Youtube guide used: https://www.youtube.com/watch?v=K6N9dSMb7sM
 // Some code taken from: https://dev.twitch.tv/docs/irc/. Specifically official Twitch example chatbot. Under "Step:2 Sample Code".
 // Twitch IRC guide used: https://blog.bashtech.net/a-guide-to-twitch-irc/
-// Go here for a reference to the userstate object. Which is a chat users info. https://docs.tmijs.org/v1.2.1/Events.html#chat
-
+// TwitchJS getting started: https://github.com/twitch-apis/twitch-js/blob/master/docs/HomeGettingStarted.md
+// Go here for a reference to the userstate object (Chat users info): https://github.com/twitch-apis/twitch-js/blob/HEAD/docs/Chat/Configuration.md
+// TwitchJS how to setup: https://github.com/twitch-apis/twitch-js/blob/6c2d99d6ed2522cc958d18cb2e1ffe37ce71781b/docs/Examples.md
+// Working example script: https://gist.github.com/JeffreyBodin/31ed9fdafe84535b4d54571c88f895dc.js
 
 // Global Vars
 var packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
 var waldyBotVersion = packageJson["version"];
 
-var TwitchJsClient = new TwitchJs({ twitchPassword, twitchUserName });
-var twitchUserName = 'waldybot'; // <-- YOUR account's username (String). See Objects/Media Storage/bot account username how to.png.
-  // Default: Use globalVarsObjs.authenticationObject.authToken
-    // IF still commited as my local enviroment. Setup as follows: 
-      // Overwrite: testAuthNotCommited.testerTwitchTokenObject.TestTwitchOAuth 
-      // With: globalVarsObjs.authenticationObject.authToken
-var twitchPassword = testAuthNotCommited.testerTwitchTokenObject.TestTwitchOAuth; // <-- OAuth password. 
-  // See Objects/Auth.js for detailed instructions on key generation + Auth.js setup.
-var twitchChannels = {
-  channels: ["carc1nogen", "hdbeasta", "#hdbeasta", "#HDBeasta"] // <-- YOUR twitch channels you want to connect to. Overwite/add your channels here. 
-}
-var { api, chatConstants } = TwitchJsClient;
-var { chat } = TwitchJsClient;
-
 
 // Global Objects
+
 
 
 // Startup
 // TMI REDO
 client.on('connected', (addr, port) => {
     // On chat connection. Msgs logged to console:
-    console.log('Address:' + addr); // Connected address
-    console.log('Port:' + port); // Connected port
+    //console.log('Address:' + addr); // Connected address
+    //console.log('Port:' + port); // Connected port
     //console.log(``+ client.getUsername()); // placeholder. Logs variation of 'justinfan + #####'. ERROR?? 
-    console.log(``+ client.getChannels()); // placeholder. Logs blankspace.
-    console.log(``+ client.readyState()); // Logs 'OPEN'? Returns one of the following states: "CONNECTING", "OPEN", "CLOSING" or "CLOSED".
-    console.log(`v` + waldyBotVersion); // Current version
-    console.log(`Ready....`);
+    //console.log(``+ client.getChannels()); // placeholder. Logs blankspace.
+    //console.log(``+ client.readyState()); // Logs 'OPEN'? Returns one of the following states: "CONNECTING", "OPEN", "CLOSING" or "CLOSED".
+    //console.log(`v` + waldyBotVersion); // Current version
+    //console.log(`Ready....`);
 
-    console.log(client.getOptions());
-    console.log(client.getUsername());
+    //console.log(client.getOptions());
+    //console.log(client.getUsername());
   }
 );
 
 
 // Event Handlers:
 // Note: Registers the event handlers. (Defined Below)
+// Event listener that will respond to "!command" messages with: "Hello world!"
+client.on('chat', (channel, userstate, message, self) => {
+  console.log(
+    `Message "${message}" received from ${userstate['display-name']}`,
+  );
 
-// TMI REDO
-client.on("chat", function (channel, userstate, message, self) { //in progress
-  if(self) return; // Ignores bot msgs
-  //if(message.substr(0, 1) === commandPrefix) {
-  //  client._sendMessage(0, options.channels[0], 'WaldyBot in the house!');
-  //}
+  // Do not repond if the message is from the connected identity.
+  if (self) return;
+
+  if (options.identity && message === '!command') {
+    // If an identity was provided, respond in channel with message.
+    client.say(channel, 'Hello world!');
+  }
   if(message == '@waldybot') {
-
-  } 
-  console.log(channel);
-  client.action(channel = "carc1nogen", userstate['username'] + " fuck you");
-  client.action(channel = "hdbeasta", userstate['username'] + " fuck you");
+    console.log(channel);
+    //client.action(channel = "carc1nogen", userstate['username'] + " fuck you");
+    //client.action(channel = "hdbeasta", userstate['username'] + " fuck you");
+  }
 });
 
 
 // TESTTEST
-  // Get featured streams.
-api.get('streams/featured').then(response => {
-  console.log(response)
-})
-  // Listen to all events.
-const log = msg => console.log(msg)
-chat.on(chatConstants.EVENTS.ALL, log)
-
-
-
-// TMI REDO
-client.on("ping", function () {
-  console.log('ping');
-});
-// TMI REDO
-client.on("pong", function (latency) {
-  console.log('pong');
-});
-
-// Called every time a message comes in:
-// TMI REDO 
-function onMessageHandler (target, context, msg, self) {
-  if (self) { return } // Ignore messages from the bot
-
-  // This isn't a command since it has no prefix:
-  if (msg.substr(0, 1) !== commandPrefix) {
-    console.log(`[${target} (${context['message-type']})] ${context.username}: ${msg}`)
-    return
-  }
-
-  // Split the message into individual words:
-  const parse = msg.slice(1).split(' ')
-  // The command name is the first (0th) one:
-  const commandName = parse[0]
-  // The rest (if any) are the parameters:
-  const params = parse.splice(1)
-
-  // If the command is known, let's execute it:
-  if (commandName in knownCommands) {
-    // Retrieve the function by its name:
-    const command = knownCommands[commandName]
-    // Then call the command with parameters:
-    command(target, context, params)
-    console.log(`* Executed ${commandName} command for ${context.username}`)
-  } else {
-    console.log(`* Unknown command ${commandName} from ${context.username}`)
-  }
-}
+  // Get featured streams. Doesn't work, fix.
+  //api.get('streams/featured').then(response => {
+  //  console.log(response)
+  //});
+  // Listen to all events. Doesn't work, fix.
+  //const log = msg => console.log(msg);
+  //client.on(chatConstants.EVENTS.ALL, log);
 
 
 // Commands:
 // Placeholder Command 1
 // Placeholder Command 2
 
-chat.connect().then(() => {
-  // ... and then join the channel.
-  chat.join(twitchChannels.channels);
-  //chat.join(twitchChannels.channels(array.forEach(element => {return})));
-});
-//client.connect(); // See package.json: "start": "node WaldyBotTwitch.js",. Call "node WaldyBotTwitch.js" to start bot. 
+
+client.connect(); // See package.json: "start": "node WaldyBotTwitch.js",. Call "node WaldyBotTwitch.js" to start bot. 
