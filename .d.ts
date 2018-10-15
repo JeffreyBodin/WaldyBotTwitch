@@ -2,3 +2,5 @@
 // declare module '*'; The benefit (and downside) of this is that you can import absolutely anything and TS will compile.
 //declare module 'tmi.js';
 //declare module 'tmi.js'
+declare module 'twitch-js';
+declare module 'twitch-js'
