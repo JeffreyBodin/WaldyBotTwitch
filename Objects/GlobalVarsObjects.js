@@ -7,7 +7,7 @@ var authFile = require('./Auth.js');
 // Help Files - Contains strings that are DM'd to user on request for help.
 
 // Authentication
-var authToken = authFile.twitchTokenObject.TwitchOAuth;
+const authToken = authFile.twitchTokenObject.TwitchOAuth;
 
 // Objects
 var globalVarObject = {
@@ -30,7 +30,7 @@ var otherObject = {
 }
 
 var authenticationObject = {
-  authToken: authToken
+  authTokenProperty: authToken,
 }
 
 var commandVarObject = {

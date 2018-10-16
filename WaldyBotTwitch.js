@@ -1,18 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, no-console */
 // Imported Node Modules
-var TwitchJS = require("twitch-js"); //.default; // TwitchJS https://www.npmjs.com/package/twitch-js
-
+const TwitchJs = require('twitch-js'); // TwitchJS https://www.npmjs.com/package/twitch-js
 var fs = require('fs');
 var globalVarsObjs = require('./Objects/GlobalVarsObjects.js');
 var testAuthNotCommited = require('./testauth.js');
-const defaultIdentityPassword = globalVarsObjs.authenticationObject.authToken;
+const defaultIdentityPassword = globalVarsObjs.authenticationObject.authTokenProperty;
 const testAuthNotCommitedLocalUsername = testAuthNotCommited.testerTwitchTokenObject.testTwitchUsername;
 const testAuthNotCommitedLocalPassword = testAuthNotCommited.testerTwitchTokenObject.TestTwitchOAuth;
-
-// Commands start with 'w':
-//var commandPrefix = 'w';
-
-// TMI Module's Options Object (Passed into the new client var.)
-// TMI REDO
 const options = {
   connection: {
       reconnect: true,
@@ -35,18 +29,35 @@ const options = {
   },
   channels: ['#hdbeasta'],
 };
-
-var client = new TwitchJS.Client(options); // TwitchJS https://twitch-apis.github.io/twitch-js/docs/getting-started
+const token = options.identity.password;
+const username = options.identity.username;
+const client = new TwitchJs.default({ token, username });
+//function twitchJSClientFunction() {
+//  let twitchJSArg = TwitchJS;
+//  let twitchJSArgClient = twitchJSArg.Client;
+//  let optionArgObj = options;
+//  let twitchJSConstructor = new twitchJSArgClient(optionArgObj);
+//  return twitchJSConstructor;
+//}
+//const client = new twitchJSClientFunction;
+//const client = new {
+//  twitchJSClientParam: TwitchJSLoad.Client(options),
+//};
 
 
 // Notes:
 // Youtube guide used: https://www.youtube.com/watch?v=K6N9dSMb7sM
 // Some code taken from: https://dev.twitch.tv/docs/irc/. Specifically official Twitch example chatbot. Under "Step:2 Sample Code".
 // Twitch IRC guide used: https://blog.bashtech.net/a-guide-to-twitch-irc/
-// TwitchJS getting started: https://github.com/twitch-apis/twitch-js/blob/master/docs/HomeGettingStarted.md
+// TwitchJS: 
+  // https://twitch-apis.github.io/twitch-js/
+  // getting started: https://github.com/twitch-apis/twitch-js/blob/master/docs/HomeGettingStarted.md
+  // Also, TwitchJS https://twitch-apis.github.io/twitch-js/docs/getting-started
+  // TwitchJS how to setup: https://github.com/twitch-apis/twitch-js/blob/6c2d99d6ed2522cc958d18cb2e1ffe37ce71781b/docs/Examples.md
+  // Working example script: https://gist.github.com/JeffreyBodin/31ed9fdafe84535b4d54571c88f895dc.js
 // Go here for a reference to the userstate object (Chat users info): https://github.com/twitch-apis/twitch-js/blob/HEAD/docs/Chat/Configuration.md
-// TwitchJS how to setup: https://github.com/twitch-apis/twitch-js/blob/6c2d99d6ed2522cc958d18cb2e1ffe37ce71781b/docs/Examples.md
-// Working example script: https://gist.github.com/JeffreyBodin/31ed9fdafe84535b4d54571c88f895dc.js
+
+
 
 // Global Vars
 var packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));

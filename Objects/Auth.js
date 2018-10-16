@@ -7,7 +7,7 @@
 // Objects
 // Twitch Token Object
 var twitchTokenObject = {
-  TwitchOAuth: '', // Your Auth Token (String) Goes HERE <------------
+  TwitchOAuth: 'OAuthTokenPlaceHolder', // Your Auth Token (String) Goes HERE <------------
 }
 
 // Export Object

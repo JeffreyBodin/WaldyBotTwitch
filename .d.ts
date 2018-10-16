@@ -3,4 +3,5 @@
 //declare module 'tmi.js';
 //declare module 'tmi.js'
 declare module 'twitch-js';
-declare module 'twitch-js'
+declare module 'twitch-js';
+declare module 'twitch-js';
