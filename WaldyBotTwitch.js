@@ -7,6 +7,25 @@ var testAuthNotCommited = require('./testauth.js');
 const defaultIdentityPassword = globalVarsObjs.authenticationObject.authTokenProperty;
 const testAuthNotCommitedLocalUsername = testAuthNotCommited.testerTwitchTokenObject.testTwitchUsername;
 const testAuthNotCommitedLocalPassword = testAuthNotCommited.testerTwitchTokenObject.TestTwitchOAuth;
+
+
+
+// Notes:
+// Youtube guide used: https://www.youtube.com/watch?v=K6N9dSMb7sM
+// Some code taken from: https://dev.twitch.tv/docs/irc/. Specifically official Twitch example chatbot. Under "Step:2 Sample Code".
+// Twitch IRC guide used: https://blog.bashtech.net/a-guide-to-twitch-irc/
+// TwitchJS: 
+  // https://twitch-apis.github.io/twitch-js/
+  // getting started: https://github.com/twitch-apis/twitch-js/blob/master/docs/HomeGettingStarted.md
+  // Also, TwitchJS https://twitch-apis.github.io/twitch-js/docs/getting-started
+  // TwitchJS how to setup: https://github.com/twitch-apis/twitch-js/blob/6c2d99d6ed2522cc958d18cb2e1ffe37ce71781b/docs/Examples.md
+  // Working example script: https://gist.github.com/JeffreyBodin/31ed9fdafe84535b4d54571c88f895dc.js
+// Go here for a reference to the userstate object (Chat users info): https://github.com/twitch-apis/twitch-js/blob/HEAD/docs/Chat/Configuration.md
+
+
+// Global Vars
+var packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+var waldyBotVersion = packageJson["version"];
 const options = {
   connection: {
       reconnect: true,
@@ -31,97 +50,132 @@ const options = {
 };
 const token = options.identity.password;
 const username = options.identity.username;
-const client = new TwitchJs.default({ token, username });
-//function twitchJSClientFunction() {
-//  let twitchJSArg = TwitchJS;
-//  let twitchJSArgClient = twitchJSArg.Client;
-//  let optionArgObj = options;
-//  let twitchJSConstructor = new twitchJSArgClient(optionArgObj);
-//  return twitchJSConstructor;
-//}
-//const client = new twitchJSClientFunction;
-//const client = new {
-//  twitchJSClientParam: TwitchJSLoad.Client(options),
-//};
+const twitchJs = new TwitchJs.default({ token, username });
 
+const optionsObjChannelsArray = options.channels; 
+const channelsArrayClean = optionsObjChannelsArray.toLocaleString().toLocaleLowerCase().split(',');
 
-// Notes:
-// Youtube guide used: https://www.youtube.com/watch?v=K6N9dSMb7sM
-// Some code taken from: https://dev.twitch.tv/docs/irc/. Specifically official Twitch example chatbot. Under "Step:2 Sample Code".
-// Twitch IRC guide used: https://blog.bashtech.net/a-guide-to-twitch-irc/
-// TwitchJS: 
-  // https://twitch-apis.github.io/twitch-js/
-  // getting started: https://github.com/twitch-apis/twitch-js/blob/master/docs/HomeGettingStarted.md
-  // Also, TwitchJS https://twitch-apis.github.io/twitch-js/docs/getting-started
-  // TwitchJS how to setup: https://github.com/twitch-apis/twitch-js/blob/6c2d99d6ed2522cc958d18cb2e1ffe37ce71781b/docs/Examples.md
-  // Working example script: https://gist.github.com/JeffreyBodin/31ed9fdafe84535b4d54571c88f895dc.js
-// Go here for a reference to the userstate object (Chat users info): https://github.com/twitch-apis/twitch-js/blob/HEAD/docs/Chat/Configuration.md
-
-
-
-// Global Vars
-var packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
-var waldyBotVersion = packageJson["version"];
 
 
 // Global Objects
+//var channelBotConnect = function () {
+//  channelsArrayClean.map(channel => twitchJs.chat.join(channel));
+//}
+//var botConnect = channelBotConnect();
+//  console.log(channelBotConnect, botConnect);
 
 
 
-// Startup
-// TMI REDO
-client.on('connected', (addr, port) => {
-    // On chat connection. Msgs logged to console:
-    //console.log('Address:' + addr); // Connected address
-    //console.log('Port:' + port); // Connected port
-    //console.log(``+ client.getUsername()); // placeholder. Logs variation of 'justinfan + #####'. ERROR?? 
-    //console.log(``+ client.getChannels()); // placeholder. Logs blankspace.
-    //console.log(``+ client.readyState()); // Logs 'OPEN'? Returns one of the following states: "CONNECTING", "OPEN", "CLOSING" or "CLOSED".
-    //console.log(`v` + waldyBotVersion); // Current version
-    //console.log(`Ready....`);
-
-    //console.log(client.getOptions());
-    //console.log(client.getUsername());
-  }
-);
+// Testing Array Area 
+// Testing Channel Obj
+//var optionsTestingObject = {
+//  channels: ['#hdbeasta', '#waldy713'],
+//};
+//var channelsGlobalArrayTesting = optionsTestingObject.channels; 
+//var channelGlobalTesting = channelsGlobalArrayTesting.map(
+//  channel =>
+//    new Channels(channel)
+//  ,
+// function Channels(channelString) {
+//    this.channel = channelString;
+//  }
+//);
 
 
-// Event Handlers:
+/*
 // Note: Registers the event handlers. (Defined Below)
 // Event listener that will respond to "!command" messages with: "Hello world!"
-client.on('chat', (channel, userstate, message, self) => {
-  console.log(
-    `Message "${message}" received from ${userstate['display-name']}`,
+
+
+
+
+*/
+
+
+
+// STARTUP:
+// See package.json to edit startup command. At:""start": "node WaldyBotTwitch.js","
+// Default call "node WaldyBotTwitch.js" to start bot in powershell/command prompt etc.. 
+twitchJs.chat.connect().then(globalUserState => {
+  
+  // JOINING CHANNEL
+  twitchJs.chat.join(optionsObjChannelsArray[0]).then(channelState => {
+    // Do stuff with channelState...
+  })
+
+
+  // Startup Logs
+  twitchJs.chat.on('JOIN', (channel, userstate, message, self) => {
+    // On chat connection. Msgs logged to console:
+    twitchJs.chat.on('GLOBALUSERSTATE', message => {
+      console.log(message);
+    });
+    console.log(`v` + waldyBotVersion); // Current version
+    console.log(`Ready....`);
+    }
   );
+  
+  
+  // Event Handlers:
+  // Listen to all messages
+  twitchJs.chat.on('*', message => {
+    // Do stuff with message ...
+  })
 
-  // Do not repond if the message is from the connected identity.
-  if (self) return;
+  // Listen to PRIVMSG
+  twitchJs.chat.on('PRIVMSG', privateMessage => {
+    // Do stuff with privateMessage ...
+  })
 
-  if (options.identity && message === '!command') {
-    // If an identity was provided, respond in channel with message.
-    client.say(channel, 'Hello world!');
-  }
-  if(message == '@waldybot') {
-    console.log(channel);
-    //client.action(channel = "carc1nogen", userstate['username'] + " fuck you");
-    //client.action(channel = "hdbeasta", userstate['username'] + " fuck you");
-  }
+  twitchJs.chat.on('chat', (channel, userstate, message, self) => {
+    console.log(
+      `Message "${message}" received from ${userstate['username']}`,
+    );
+    //if (self) return; // Placeholder
+    if (options.identity && message === 'w help') {
+      // If an identity was provided, respond in channel with message.
+      twitchJs.chat.say(channel, 'Hello world!');
+    }
+    if(message == '@waldybot') {
+      console.log(channel);
+      twitchJs.chat.say(channel, userstate['username'] + " fuck you");
+      //client.action(channel = "hdbeasta", userstate['username'] + " fuck you");
+    }
+  });
+  // Commands:
+  // Placeholder Command 1
+  //twitchJs.chat.connect().then(helpCommand => {
+  //  //if (self) return;
+  //  console.log(
+  //    `Message "${message}" received from ${userstate['display-name']}`,
+  //  );
+  //
+  // twitchJs.chat.on('*', (message, user) =>{
+  //    if(message === 'w help'){
+  //      twitchJs.chat.  whisper(user, message);
+  //    }
+  //  });  
+  //});
+  // Placeholder Command 2
+
+
 });
 
 
-// TESTTEST
-  // Get featured streams. Doesn't work, fix.
-  //api.get('streams/featured').then(response => {
-  //  console.log(response)
-  //});
-  // Listen to all events. Doesn't work, fix.
-  //const log = msg => console.log(msg);
-  //client.on(chatConstants.EVENTS.ALL, log);
-
-
-// Commands:
-// Placeholder Command 1
-// Placeholder Command 2
-
-
-client.connect(); // See package.json: "start": "node WaldyBotTwitch.js",. Call "node WaldyBotTwitch.js" to start bot. 
+// Noted for later how to map and join multi-channels.
+//Promise.all(options.channels.map(channel => twitchJs.chat.join(channel)))
+//  .then(channelStates => {
+//    // Listen to all PRIVMSG
+//    chat.on('PRIVMSG', privateMessage => {
+//      // Do stuff with privateMessage ...
+//    });
+//
+//    // Listen to PRIVMSG from #dallas ONLY
+//    chat.on('PRIVMSG/#dallas', privateMessage => {
+//      // Do stuff with privateMessage ...
+//    });
+//    // Listen to all PRIVMSG from #ronni ONLY
+//    chat.on('PRIVMSG/#ronni', privateMessage => {
+//      // Do stuff with privateMessage ...
+//    });
+//  });
