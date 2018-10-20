@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "WaldyBot now on Twitch! ",
   "main": "WaldyBotTwitch.js",
+  "typings": "WaldyBotTwitch",
   "scripts": {
     "start": "node WaldyBotTwitch.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,5 +12,8 @@
   "license": "MIT",
   "dependencies": {
     "twitch-js": "^2.0.0-beta.21"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.0"
   }
 }
